@@ -1,4 +1,4 @@
-Secure socket.io websockets 
+socket.io websockets auth 
 ======
 
 ## install vendors
