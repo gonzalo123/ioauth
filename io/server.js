@@ -1,25 +1,23 @@
 var io = require('socket.io')(3000),
-    http = require('http'),
-    options;
+    http = require('http');
 
-options = {
-    host: 'localhost',
-    port: 8080,
-    headers: {Cookie: undefined},
-    path: '/private'
-};
+io.use(function (socket, next) {
+    var options = {
+        host: 'localhost',
+        port: 8080,
+        path: '/private',
+        headers: {Cookie: 'PHPSESSID=' + socket.handshake.query.token}
+    };
 
-io.on('connection', function (socket) {
-    // now we need to validate our token
-    options.headers.Cookie = 'PHPSESSID=' + socket.handshake.query.token;
-
-    // in this example our token is a PHP session so we'll perform a http
-    // request to a private route using this session
     http.request(options, function (response) {
         response.on('error', function () {
-            // if our request returns an error that means our session isn't
-            // valid one, so we disconnect our socket.io connection
-            socket.disconnect('unauthorized');
+            next(new Error("not authorized"));
+        }).on('data', function () {
+            next();
         });
     }).end();
+});
+
+io.on('connection', function () {
+    console.log("connected!");
 });
