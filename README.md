@@ -12,6 +12,11 @@ composer install
 npm install
 ```
 
+## install bower dependencies
+```
+bower install
+```
+
 ## run frontend server
 
 ```

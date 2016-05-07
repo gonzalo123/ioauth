@@ -1,0 +1,25 @@
+{
+  "name": "wssecurity",
+  "description": "Example of socket.io authentication",
+  "authors": [
+    "Gonzalo Ayuso"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "io",
+    "websockets",
+    "silex"
+  ],
+  "homepage": "https://github.com/gonzalo123/ioauth",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/assets",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}

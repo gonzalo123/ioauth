@@ -19,7 +19,7 @@ $app->get('/', function (Application $app) {
     return $app['twig']->render('home.twig');
 });
 
-$app->get('/login', function () use ($app) {
+$app->get('/login', function (Application $app) {
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
     $password = $app['request']->server->get('PHP_AUTH_PW');
 
@@ -36,15 +36,23 @@ $app->get('/login', function () use ($app) {
     return $response;
 });
 
-$app->get('/private', function () use ($app) {
+$app->get('/getSessionID', function (Application $app) {
+    $user = $app['session']->get('user');
+    if (null === $user) {
+        throw new AccessDeniedHttpException('Access Denied');
+    }
+
+    return $app->json($app['session']->getId());
+});
+
+$app->get('/private', function (Application $app) {
     $user = $app['session']->get('user');
     if (null === $user) {
         throw new AccessDeniedHttpException('Access Denied');
     }
 
     return $app['twig']->render('private.twig', [
-        'username'  => $user['username'],
-        'sessionId' => $app['session']->getId()
+        'username' => $user['username']
     ]);
 });
 
