@@ -1,18 +1,5 @@
 var io = require('socket.io')(3000),
-    http = require('http'),
-    timer = (function (interval) {
-        var callback;
-
-        setInterval(function () {
-            if (callback) callback();
-        }, interval);
-
-        return {
-            onBeat: function (cbk) {
-                callback = cbk;
-            }
-        }
-    })(1000);
+    http = require('http');
 
 io.use(function (socket, next) {
     var sessionId = socket.handshake.query.token,
@@ -45,7 +32,7 @@ io.use(function (socket, next) {
 });
 
 io.on('connection', function (socket) {
-    timer.onBeat(function () {
+    setInterval(function() {
         socket.emit('hello', {hello: 'world'});
-    });
+    }, 1000);
 });
